@@ -15,3 +15,6 @@ def rotateStringComp(text):
 
 print(palindrome('Testing'))
 print(palindrome('legovogel'))
+
+# Een libary die een woord omdraait?
+# Ik had gezocht maar niks gevonden.
