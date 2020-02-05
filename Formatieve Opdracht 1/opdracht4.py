@@ -10,5 +10,8 @@ def palindrome(text):
     else:
         return False
 
+def rotateStringComp(text):
+    return text[::-1]
+
 print(palindrome('Testing'))
 print(palindrome('legovogel'))
