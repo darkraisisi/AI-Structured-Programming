@@ -21,9 +21,9 @@ def drawPyramideWhile(height: int):
 def drawPyramideForRightSide(height: int):
     i = 1
     for i in range(height):
-        print(('{:>'+str(height)+'}').format(i*'*'))
+        print(('{:>{}}').format(i*'*',height))
     for i in range(height):
-        print(('{:>'+str(height)+'}').format((height-i)*'*'))
+        print(('{:>{}}').format((height-i)*'*',height))
 
 drawPyramideFor(int(input('Pyramide met ForLoop\nCijfer hier: ')))
 
