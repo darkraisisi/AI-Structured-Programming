@@ -10,5 +10,6 @@ def sortList(listToSort):
         listToSort[j + 1] = key
     
     return listToSort
+    # return listToSort.sort()
 
 print(sortList(myList))
