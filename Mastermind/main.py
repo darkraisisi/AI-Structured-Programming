@@ -29,7 +29,31 @@ def setOptionAmount():
    print('test')
 
 def AIvsAI():
-   print('AI!')
+   wins = 0
+   loses = 0
+   amountOfGames = input("Howmany games do you want to play?\n")
+   game = 0
+   print(f'Secret: {colors.SECRET}')
+   while game < int(amountOfGames):
+      print(f'New Round, round {game}')
+      for turn in range(0,maxTries):
+         print(f'Turn:{turn+1}')
+         guesse = inputToGuesse()
+         evaluation = colors.evaluateColors(guesse,colors.SECRET)
+         print(evaluation)
+         if(evaluation['black'] == 4):
+            print('-----\nYou won\n-----')
+            hasWon = True
+            break
+      game += 1
+
+      if(hasWon):
+         wins += 1
+      else:
+         loses += 1
+      
+
+   print(f'Player 1 Won:{wins} times and Lost:{loses} times')
 
 def personVsAi():
    wins = 0
@@ -38,12 +62,25 @@ def personVsAi():
    game = 0
    print(f'Secret: {colors.SECRET}')
    while game < int(amountOfGames):
+      print(f'New Round, round {game}')
       for turn in range(0,maxTries):
          print(f'Turn:{turn+1}')
          guesse = inputToGuesse()
          evaluation = colors.evaluateColors(guesse,colors.SECRET)
          print(evaluation)
+         if(evaluation['black'] == 4):
+            print('-----\nYou won\n-----')
+            hasWon = True
+            break
       game += 1
+
+      if(hasWon):
+         wins += 1
+      else:
+         loses += 1
+      
+
+   print(f'You Won:{wins} times and Lost:{loses} times')
 
 def inputToGuesse()->list:
    newGuesse = []
