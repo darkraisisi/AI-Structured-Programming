@@ -5,7 +5,6 @@ import time
 codeLength = 4
 maxTries = 8
 amountOfColors = len(colors.all_colors)
-algo.generateSecret()
 
 def checkInputOptions(_input: str, options: dict, callback) -> str:
     if _input in options:
@@ -16,17 +15,33 @@ def checkInputOptions(_input: str, options: dict, callback) -> str:
         callback()
 
 def selectGameMode():
-   mode = input('Please select the gamemode you want to play.\n1: AI vs AI, see the result of a guessing algorithm.\n2: You vs Ai, You input all the guesses and and asses the responses.\n')
-   # \n3: AI vs You, You input a secret and respond to the guesses being made by the AI.
-   checkInputOptions(mode,{'1':AIvsAI,'AI vs AI':AIvsAI,'2':personVsAi,'You vs AI':personVsAi},selectGameMode)
+   checkInputOptions(
+      input('Please select the gamemode you want to play.\n1: AI vs AI, see the result of a guessing algorithm.\n2: You vs Ai, You input all the guesses and and asses the responses.\n'),{
+         '1':AIvsAI,'AI vs AI':AIvsAI,
+         '2':personVsAi,'You vs AI':personVsAi
+         }
+      ,selectGameMode)
+
 def selectGameOptions():
-   checkInputOptions(input("Do want to continue with normal game options?\n8 max tries?\n6 different colors?(wip)\nCode length of 4?(wip)\ny/n?"),{'n':gameOptions,'no':gameOptions},selectGameOptions)
+   checkInputOptions(
+      input("Do want to continue with normal game options?\n8 max tries?\n6 different colors?(wip)\nCode length of 4?(wip)\ny/n?\n"), {
+      'n':gameOptions,'no':gameOptions,
+      'y':selectGameMode,'yes':selectGameMode
+      }
+   ,selectGameOptions)
 
 def gameOptions():
-   checkInputOptions(input("Which option do you want to change?\n1: Max tries?\n2: Amount of different colors?(wip)\n3: Code length(wip)?\n"),{'1':setOptionAmount},gameOptions)
+   checkInputOptions(
+      input("Which option do you want to change?\n1: Max tries?\n2: Amount of different colors?(wip)\n3: Code length(wip)?\n"),{
+         '1':setMaxTries
+         }
+      ,gameOptions)
+   selectGameMode()
 
-def setOptionAmount():
-   print('test')
+def setMaxTries():
+   global maxTries
+   maxTries = int(input('Please input the amount of tries.\n'))
+   return
 
 def AIvsAI():
    wins = 0
@@ -35,9 +50,9 @@ def AIvsAI():
    game = 0
    totalTries = 0
    startTime = time.time()
-   print("Start Time: {startTime}")
+
    while game < int(amountOfGames):
-      # print(f'game:{game}')
+      print(f'game:{game}')
       hasWon = False
       algo.generateSecret()
       algo.repopulateAllCombinations()
@@ -45,8 +60,9 @@ def AIvsAI():
       for turn in range(0,maxTries):
          totalTries += 1
 
-         # evaluation = algo.simpleAlgorithm(turn,colors.SECRET)
-         evaluation = algo.consistentWorstCaseAlgorithm(turn,colors.SECRET)
+         evaluation = algo.simpleAlgorithm(turn,colors.SECRET)
+         # evaluation = algo.consistentWorstCaseAlgorithm(turn,colors.SECRET)
+         # evaluation = algo.heuristicAlgorithm(turn,colors.SECRET) 
 
          if(evaluation['black'] == 4):
             hasWon = True
@@ -74,6 +90,7 @@ def personVsAi():
    while game < int(amountOfGames):
       print(f'New Round, round {game}')
       hasWon = False
+      algo.generateSecret()
       for turn in range(0,maxTries):
          print(f'Turn:{turn+1}')
          guesse = inputToGuesse()
@@ -89,7 +106,6 @@ def personVsAi():
          wins += 1
       else:
          loses += 1
-      
 
    print(f'You Won:{wins} times and Lost:{loses} times')
 
@@ -118,10 +134,6 @@ def inputToColor(i)->str:
             return color
 
 if __name__ == "__main__":
-   # selectGameOptions()
-   selectGameMode()
-   # inputToGuesse()
-   # pins = algo.evaluateColors(['Green','Green','Red','Yellow'],colors.SECRET)
-   # print(pins)
-   # print(len(algo.allPossibleCombinations))
-   # print('done')
+   selectGameOptions()
+   # selectGameMode()
+   print('Exit')
