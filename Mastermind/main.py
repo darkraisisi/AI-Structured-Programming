@@ -5,7 +5,7 @@ import time
 codeLength = 4
 maxTries = 8
 amountOfColors = len(colors.all_colors)
-userSecret = [] # list of x long (usually 4) with names of colours
+algo.generateSecret()
 
 def checkInputOptions(_input: str, options: dict, callback) -> str:
     if _input in options:
@@ -31,20 +31,25 @@ def setOptionAmount():
 def AIvsAI():
    wins = 0
    loses = 0
-   amountOfGames = input("Howmany games do you want to play?\n")
+   amountOfGames = input("How many games do you want to play?\n")
    game = 0
-   print(f'Secret: {colors.SECRET}')
+   totalTries = 0
+
    while game < int(amountOfGames):
-      print(f'New Round, round {game}')
+      print(f'game:{game}')
+      hasWon = False
+      algo.generateSecret()
+      algo.repopulateAllCombinations()
+
       for turn in range(0,maxTries):
-         print(f'Turn:{turn+1}')
-         guesse = inputToGuesse()
-         evaluation = colors.evaluateColors(guesse,colors.SECRET)
-         print(evaluation)
+         totalTries += 1
+
+         evaluation = algo.simpleAlgorithm(turn,colors.SECRET)
+
          if(evaluation['black'] == 4):
-            print('-----\nYou won\n-----')
             hasWon = True
             break
+
       game += 1
 
       if(hasWon):
@@ -54,6 +59,8 @@ def AIvsAI():
       
 
    print(f'Player 1 Won:{wins} times and Lost:{loses} times')
+   print(f'TotalTries:{totalTries}/ Amount of games played:{game}')
+   print(f'Amount of guesses ratio:{totalTries / game}')
 
 def personVsAi():
    wins = 0
@@ -63,10 +70,11 @@ def personVsAi():
    print(f'Secret: {colors.SECRET}')
    while game < int(amountOfGames):
       print(f'New Round, round {game}')
+      hasWon = False
       for turn in range(0,maxTries):
          print(f'Turn:{turn+1}')
          guesse = inputToGuesse()
-         evaluation = colors.evaluateColors(guesse,colors.SECRET)
+         evaluation = algo.evaluateColors(guesse,colors.SECRET)
          print(evaluation)
          if(evaluation['black'] == 4):
             print('-----\nYou won\n-----')
@@ -110,7 +118,7 @@ if __name__ == "__main__":
    # selectGameOptions()
    selectGameMode()
    # inputToGuesse()
-   # pins = colors.evaluateColors(['Green','Green','Red','Yellow'],colors.SECRET)
+   # pins = algo.evaluateColors(['Green','Green','Red','Yellow'],colors.SECRET)
    # print(pins)
    # print(len(algo.allPossibleCombinations))
    # print('done')
