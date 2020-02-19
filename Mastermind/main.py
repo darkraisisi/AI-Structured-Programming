@@ -34,9 +34,10 @@ def AIvsAI():
    amountOfGames = input("How many games do you want to play?\n")
    game = 0
    totalTries = 0
-
+   startTime = time.time()
+   print("Start Time: {startTime}")
    while game < int(amountOfGames):
-      print(f'game:{game}')
+      # print(f'game:{game}')
       hasWon = False
       algo.generateSecret()
       algo.repopulateAllCombinations()
@@ -44,7 +45,8 @@ def AIvsAI():
       for turn in range(0,maxTries):
          totalTries += 1
 
-         evaluation = algo.simpleAlgorithm(turn,colors.SECRET)
+         # evaluation = algo.simpleAlgorithm(turn,colors.SECRET)
+         evaluation = algo.consistentWorstCaseAlgorithm(turn,colors.SECRET)
 
          if(evaluation['black'] == 4):
             hasWon = True
@@ -57,7 +59,8 @@ def AIvsAI():
       else:
          loses += 1
       
-
+   elapsedTime = time.time() - startTime
+   print(f'To complete {game} games it took:{elapsedTime}s')
    print(f'Player 1 Won:{wins} times and Lost:{loses} times')
    print(f'TotalTries:{totalTries}/ Amount of games played:{game}')
    print(f'Amount of guesses ratio:{totalTries / game}')

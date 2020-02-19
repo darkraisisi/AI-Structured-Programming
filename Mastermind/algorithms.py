@@ -61,6 +61,7 @@ def simpleAlgorithm(turn,secret):
         currentGuesse = getMiddlePosibility()
 
     masterPins = evaluateColors(currentGuesse,secret)
+
     i = 0
     tmp = mutableAllPossibleCombinations[:]
     for possibility in mutableAllPossibleCombinations:
@@ -79,3 +80,45 @@ def getMiddlePosibility():
     item = mutableAllPossibleCombinations[int(len(mutableAllPossibleCombinations) /2)]
     mutableAllPossibleCombinations.remove(item)
     return item
+
+def partitionSize():
+    # This function makes me want to cry
+    partitions = {}
+    for possibility in mutableAllPossibleCombinations:
+        key = ','.join(possibility)
+        partitions[key] = {'4,0': 0, '3,0': 0, '2,0': 0, '1,0': 0, '2,2': 0, '1,2': 0, '0,2': 0, '2,1': 0, '1,1': 0, '0,1': 0, '0,0': 0, '1,3': 0, '0,3': 0, '0,4': 0}
+
+        for _possibility in mutableAllPossibleCombinations:
+            _pins = evaluateColors(possibility,_possibility)
+            pinToStr = f"{_pins['black']},{_pins['white']}"
+            partitions[key][pinToStr] +=1
+    
+    highestPerPartition = {}
+
+    for partitionKey in partitions:
+        highestKey = max(partitions[partitionKey], key=partitions[partitionKey].get)
+        highestPerPartition[partitionKey] = partitions[partitionKey][highestKey]
+
+    best = min(highestPerPartition, key=highestPerPartition.get)
+
+    # print(best)
+    return best.split(',')
+
+def consistentWorstCaseAlgorithm(turn:int,secret):
+    global mutableAllPossibleCombinations
+    if(turn == 0):
+        currentGuesse = ['Red', 'Red', 'Green', 'Green']
+    else:
+        currentGuesse = partitionSize()
+
+    masterPins = evaluateColors(currentGuesse,secret)
+    i = 0
+    tmp = [*mutableAllPossibleCombinations]
+    for possibility in mutableAllPossibleCombinations:
+        pins = evaluateColors(currentGuesse,possibility)
+
+        if(masterPins != pins):
+            tmp.remove(possibility)
+
+    mutableAllPossibleCombinations = tmp
+    return masterPins
