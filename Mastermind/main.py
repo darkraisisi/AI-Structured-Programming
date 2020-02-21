@@ -60,9 +60,9 @@ def AIvsAI():
       for turn in range(0,maxTries):
          totalTries += 1
 
-         evaluation = algo.simpleAlgorithm(turn,colors.SECRET)
+         # evaluation = algo.simpleAlgorithm(turn,colors.SECRET)
          # evaluation = algo.consistentWorstCaseAlgorithm(turn,colors.SECRET)
-         # evaluation = algo.heuristicAlgorithm(turn,colors.SECRET) 
+         evaluation = algo.heuristicAlgorithm(turn,colors.SECRET) 
 
          if(evaluation['black'] == 4):
             hasWon = True
